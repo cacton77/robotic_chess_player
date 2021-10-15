@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import rospy
-from robotic_chess_player.srv import RobotService,RobotServiceResponse
+from robotic_chess_player.srv import ChessRobotService,ChessRobotServiceResponse
 import numpy as np
 from numpy.linalg import norm
 import rospkg
@@ -22,31 +22,32 @@ class RobotServer:
     
     def __init__(self):
 
-        self.server = rospy.Service('robot_service',RobotService,self.serviceHandler)
+        self.server = rospy.Service('robot_service',ChessRobotService,self.serviceHandler)
         self.manipulator = MotionPlanner()
         self.board = None
         self.standby = (90,-135,90,-70,-90,0.0)
         self.detector = VisualDetector()
         self.camera = AvtCamera()
+        self.EDGE = float(rospy.get_param('/parameter/edge'))
 
     def serviceHandler(self,msg):
         rospy.loginfo("Request: {}".format(msg.request))
         if msg.request == "to standby":
             self.manipulator.moveRobotJoint([[i for i in self.standby]])
-            return RobotServiceResponse('Robot arrive standby position') 
+            return ChessRobotServiceResponse('Robot arrive standby position') 
         
         elif msg.request == 'locate chessboard':
             feedback = self.locate_chessboard()
-            return RobotServiceResponse(feedback)
+            return ChessRobotServiceResponse(feedback)
         
         elif msg.request[:2] == 'to':
             detail = msg.request.split(':')
             self.to_square(detail[1])
-            return RobotServiceResponse('Done')
+            return ChessRobotServiceResponse('Done')
 
         elif msg.request == 'detect chessboard state':
             self.manipulator.moveRobot([self.base2TCP_pose])
-            return RobotServiceResponse('Robot arrive taking image position')
+            return ChessRobotServiceResponse('Robot arrive taking image position')
 
         elif msg.request[:4] == 'move':
             detail = msg.request.split(':')[1]
@@ -54,12 +55,12 @@ class RobotServer:
             self.board = np.array([list(i) for i in board_msg.split(',')])
             self.carryOutOrder(move)
             new_board = self.__boardToMsg()
-            return RobotServiceResponse(new_board)
+            return ChessRobotServiceResponse(new_board)
 
         elif msg.request[:4] == 'auto':
             detail = msg.request.split(';')[1]
             self.collectData(detail)
-            return RobotServiceResponse('Done')
+            return ChessRobotServiceResponse('Done')
 
     def locate_chessboard(self):
         try:
