@@ -87,8 +87,7 @@ $ git clone -b melodic https://github.com/ros-perception/vision_opencv.git
 * Compilation
 ```bash
 $ cd ~/cvbridge_build_ws
-$ cd catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m 
-  -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so
+$ catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so
 $ catkin config --install
 $ catkin build cv_bridge
 ```
@@ -165,17 +164,17 @@ parameter:
 * Open a terminal and initiate the driver by following the manual: [Running Universal_Robots_ROS_Driver in a separate machine](https://github.com/macs-lab/lab_doc/wiki/Running-Universal_Robots_ROS_Driver-in-a-separate-machine).
 * Run the external control program (external_control.urp) on the robot. Back to the terminal, you should see message similar to `robot is ready to receive control command`. If the polyscope does not have the external_control.urp in the folder, follow this instruction: [Installing a URCap on a e-Series robot](https://github.com/UniversalRobots/Universal_Robots_ROS_Driver/blob/master/ur_robot_driver/doc/install_urcap_e_series.md)
 
-### 2. Bring up the neural-network chess detection system
+### 3. Bring up the entire system except neural-network system:
+Open a new terminal, run:
+```bash
+$ roslaunch robotic_chess_player entire_system_bringup.launch 
+```
+
+### 3. Bring up the neural-network chess detection system
 Open a new terminal, run:
 ```bash
 $ source ~/cvbridge_build_ws/install/setup.bash --extend
 $ rosrun robotic_chess_player chessboard_state_detection.py 
-```
-
-### 3. Bring up the entire system:
-Open a new terminal, run:
-```bash
-$ roslaunch robotic_chess_player entire_system_bringup.launch 
 ```
 
 ### 4. System instruction
