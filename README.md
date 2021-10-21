@@ -38,6 +38,7 @@ development. ![software overview](doc/software_overview.png)
 # Getting started
 
 ## Installation: install dependencies
+Configure the following ONLY ONCE for a new PC. The PC at the MACS lab has already installed the needed modules.
 ### 1. Install ROS and create a workspace.
 Follow the [ROS melodic installation](http://wiki.ros.org/melodic/Installation/Ubuntu) to download the ROS.\
 Follow the [Installing and Configuring Your ROS Environment](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment) to create a ROS workspace using `catkin`
@@ -111,6 +112,7 @@ $ catkin_make
 ```
 
 ## Setting Up
+Configure the following ONLY ONCE for a new PC or when calibrations are needed. The PC at the MACS lab has already performed the needed set up.
 
 ### 1. Setting up the camera driver
 Make sure the `cam_IP` parameter in the camera launch file (robotic_chess_player/launch/camera_bringup_freerun.launch) match with the actual camera IP adress. 
